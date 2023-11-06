@@ -9,15 +9,10 @@ results_dir="$script_dir/tests/results"
 solutions_dir="$script_dir/tests/solutions"
 
 # Compile and execute C files with naming convention macid.c
-cfile="quiz2_.c"
-
-# Create a subdirectory for the current MACID
-test_case_dir="$results_dir/$macid"
-
-mkdir -p "$test_case_dir"
+cfile="quiz2.c"
 
 # Compile the C file
-gcc -o "$test_case_dir/quiz2" "$cfile"
+gcc -o "$results_dir/quiz2" "$cfile"
 
 if [ $? -eq 0 ]; then
     # Run the C program 20 times with different integer values
@@ -27,16 +22,13 @@ if [ $? -eq 0 ]; then
         # echo $value
 
         # Run the program with the integer value and capture the output
-        cd $test_case_dir
+        cd $results_dir
         # echo $PWD
         ./quiz2 "$value" > /dev/null
 
         # echo "Executed $macid with value $value (Result saved to $output)"
     done
-else
-    echo "Compilation of $macid's program failed"
 fi
-
 
 # Initialize counters for matching outputs and total files matched
 matchingComparisons=0
@@ -53,7 +45,7 @@ for test_case in "$test_case_dir"/*; do
             # Compare the student's output with the solution
             if cmp -s "$test_case" "$solutionFile"; then
                 matchingComparisons=$((matchingComparisons + 1))
-                echo $test_case
+                # echo $test_case
             fi
 
             totalComparisons=$((totalComparisons + 1))
